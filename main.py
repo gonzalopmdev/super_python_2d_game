@@ -13,32 +13,27 @@ class Game:
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Super Pirate World')
-        
-        
-        # get actual route from main.py
-        base_path = os.path.dirname(__file__)
-        
+        self.clock = pygame.time.Clock()
+       
         #Build main route to tmx file
         script_dir = dirname(realpath(__file__))
         self.tmx_path = join(script_dir, 'data', 'levels', 'omni.tmx')
 
-       
         #Load tmx file
         self.tmx_maps = {0: load_pygame(self.tmx_path)}
-        
         
         self.current_stage = Level(self.tmx_maps[0])
     
         
     def run(self):
         while True:
+            dt = self.clock.tick() / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
             
-            self.current_stage.run()        
-                    
+            self.current_stage.run(dt)        
             pygame.display.update()
             
 if __name__ == '__main__':
